@@ -497,56 +497,90 @@
                             </div>
                         </form>
                     </div>End Contact Form -->
-
                     <div class="col-lg-7">
-                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up"
-                            data-aos-delay="200">
+
+                        <form action="https://formsubmit.co/augusto.atp.91@gmail.com" method="POST">
+
+                            <!-- Configuración FormSubmit -->
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_subject" value="Nueva consulta desde RG Perforaciones">
+                            <input type="hidden" name="_next" value="https://prados91.github.io/RgPerforaciones/">
+
                             <div class="row gy-4">
+
                                 <div class="col-md-6">
                                     <label for="name-field" class="pb-2">Nombre</label>
-                                    <input type="text" name="name" id="name-field" class="form-control" required="">
+                                    <input type="text" name="name" id="name-field" class="form-control" required>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label for="lastname-field" class="pb-2">Apellido</label>
                                     <input type="text" class="form-control" name="lastname" id="lastname-field"
-                                        required="">
+                                        required>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label for="email-field" class="pb-2">Email</label>
-                                    <input type="email" class="form-control" name="email" id="email-field" required="">
+                                    <input type="email" class="form-control" name="email" id="email-field" required>
                                 </div>
+
                                 <div class="col-md-6">
                                     <label for="phone-field" class="pb-2">Teléfono / WhatsApp</label>
                                     <input type="tel" class="form-control" name="phone" id="phone-field"
                                         placeholder="+54 9 11...">
                                 </div>
+
                                 <div class="col-md-12">
                                     <label for="service-field" class="pb-2">Tipo de servicio</label>
-                                    <select class="form-control" name="service" id="service-field" required="">
+
+                                    <select class="form-control" name="service" id="service-field" required>
                                         <option value="">Seleccioná el trabajo</option>
-                                        <option value="corona-diamantada">Perforación con corona diamantada</option>
-                                        <option value="corte-losa">Corte de losa o muro</option>
-                                        <option value="pasatubos">Perforación horizontal (pasatubos)</option>
-                                        <option value="demolicion">Demolición controlada / fresado</option>
-                                        <option value="anclajes">Anclajes químicos</option>
-                                        <option value="otro">Otro / No sé / Necesito asesoramiento</option>
+
+                                        <option value="corona-diamantada">
+                                            Perforación con corona diamantada
+                                        </option>
+
+                                        <option value="corte-losa">
+                                            Corte de losa o muro
+                                        </option>
+
+                                        <option value="pasatubos">
+                                            Perforación horizontal (pasatubos)
+                                        </option>
+
+                                        <option value="demolicion">
+                                            Demolición controlada / fresado
+                                        </option>
+
+                                        <option value="anclajes">
+                                            Anclajes químicos
+                                        </option>
+
+                                        <option value="otro">
+                                            Otro / No sé / Necesito asesoramiento
+                                        </option>
                                     </select>
                                 </div>
+
                                 <div class="col-md-12">
-                                    <label for="message-field" class="pb-2">Descripción del trabajo</label>
+                                    <label for="message-field" class="pb-2">
+                                        Descripción del trabajo
+                                    </label>
+
                                     <textarea class="form-control" name="message" rows="6" id="message-field"
                                         placeholder="Contanos de qué se trata: diámetros, cantidades, tipo de estructura, ubicación de la obra, etc."
-                                        required=""></textarea>
+                                        required></textarea>
                                 </div>
+
                                 <div class="col-md-12 text-center">
-                                    <div class="loading">Cargando</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">El correo ha sido enviado. Pronto nos contactaremos.
-                                        Gracias!</div>
-                                    <button type="submit">Enviar consulta</button>
+                                    <button type="submit">
+                                        Enviar consulta
+                                    </button>
                                 </div>
+
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
