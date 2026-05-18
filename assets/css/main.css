@@ -39,7 +39,7 @@
     --nav-dropdown-color: #444444;
     /* Used for navigation links of the dropdown items in the navigation menu. */
     /* --nav-dropdown-hover-color: #47b2e4; */
-    --nav-dropdwon-hover-color:#ff0000;
+    --nav-dropdwon-hover-color: #ff0000;
     /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
 }
 
@@ -2132,4 +2132,46 @@ section,
     font-size: 20px;
     margin-right: 8px;
     color: var(--accent-color);
+}
+
+/* ===============================
+   Spinner formulario
+================================= */
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #ffffff;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===============================
+   Mensajes formulario
+================================= */
+
+.success-message {
+    background: #198754;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.error-message-custom {
+    background: #dc3545;
+    color: white;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
 }
