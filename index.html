@@ -133,67 +133,77 @@
             <div class="container" data-aos="zoom-in">
                 <div class="swiper init-swiper">
                     <script type="application/json" class="swiper-config">
-                {
-                    "loop": true,
-                    "speed": 600,
-                    "autoplay": {
-                        "delay": 5000
-                    },
-                    "slidesPerView": "auto",
-                    "pagination": {
-                        "el": ".swiper-pagination",
-                        "type": "bullets",
-                        "clickable": true
-                    },
-                    "breakpoints": {
-                        "320": {
-                            "slidesPerView": 2,
-                            "spaceBetween": 40
-                        },
-                        "480": {
-                            "slidesPerView": 3,
-                            "spaceBetween": 60
-                        },
-                        "640": {
-                            "slidesPerView": 4,
-                            "spaceBetween": 80
-                        },
-                        "992": {
-                            "slidesPerView": 5,
-                            "spaceBetween": 120
-                        },
-                        "1200": {
-                            "slidesPerView": 6,
-                            "spaceBetween": 120
+                        {
+                            "loop": true,
+                            "speed": 3000,
+                            "autoplay": {
+                                "delay": 0,
+                                "disableOnInteraction": false
+                            },
+                            "slidesPerView": "auto",
+                            "spaceBetween": 60,
+                            "grabCursor": false,
+                            "freeMode": true,
+                            "freeModeMomentum": false,
+                            "breakpoints": {
+                                "320": {
+                                    "slidesPerView": 2,
+                                    "spaceBetween": 30
+                                },
+                                "480": {
+                                    "slidesPerView": 3,
+                                    "spaceBetween": 40
+                                },
+                                "640": {
+                                    "slidesPerView": 4,
+                                    "spaceBetween": 50
+                                },
+                                "992": {
+                                    "slidesPerView": 5,
+                                    "spaceBetween": 70
+                                },
+                                "1200": {
+                                    "slidesPerView": 6,
+                                    "spaceBetween": 80
+                                }
+                            }
                         }
-                    }
-                }
-            </script>
+                        </script>
                     <!-- Marcas de equipamiento utilizado -->
                     <div class="swiper-wrapper align-items-center">
                         <div class="swiper-slide">
-                            <img src="assets/img/brands/hilti.png" class="img-fluid"
+                            <img src="assets/img/brands/hilti.svg" class="img-fluid"
                                 alt="Hilti — equipamiento de perforación profesional">
                         </div>
                         <div class="swiper-slide">
-                            <img src="assets/img/brands/bosch.png" class="img-fluid"
+                            <img src="assets/img/brands/bosch.webp" class="img-fluid"
                                 alt="Bosch — herramientas profesionales">
                         </div>
                         <div class="swiper-slide">
-                            <img src="assets/img/brands/husqvarna.png" class="img-fluid"
-                                alt="Husqvarna — equipos de corte">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="assets/img/brands/diamond-tools.png" class="img-fluid"
-                                alt="Herramientas diamantadas profesionales">
-                        </div>
-                        <div class="swiper-slide">
-                            <img src="assets/img/brands/dewalt.png" class="img-fluid"
+                            <img src="assets/img/brands/dewalt.svg" class="img-fluid"
                                 alt="DeWalt — herramientas de obra">
                         </div>
                         <div class="swiper-slide">
                             <img src="assets/img/brands/makita.png" class="img-fluid"
                                 alt="Makita — herramientas profesionales">
+                        </div>
+
+                        <!-- duplicadas -->
+
+                        <div class="swiper-slide">
+                            <img src="assets/img/brands/hilti.svg" class="img-fluid" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="assets/img/brands/bosch.webp" class="img-fluid" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="assets/img/brands/dewalt.svg" class="img-fluid" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="assets/img/brands/makita.png" class="img-fluid" alt="">
                         </div>
                     </div>
                 </div>
@@ -308,7 +318,8 @@
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-circle-half icon"></i></div>
                             <h4><a href="#contact" class="stretched-link">Perforación con Corona Diamantada</a></h4>
-                            <p>Perforaciones de precisión en hormigón armado, losas y muros. Varios diametros de corona, sin fisuras ni daños en la estructura.</p>
+                            <p>Perforaciones de precisión en hormigón armado, losas y muros. Varios diametros de corona,
+                                sin fisuras ni daños en la estructura.</p>
                         </div>
                     </div><!-- End Service Item -->
 
