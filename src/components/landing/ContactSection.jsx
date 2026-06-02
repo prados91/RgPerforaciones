@@ -14,13 +14,54 @@ export default function ContactSection() {
         message: "",
     });
 
-    const handleSubmit = (e) => {
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     console.log(formData);
+    //     setSubmitted(true);
+    //     setTimeout(() => {
+    //         setSubmitted(false);
+    //         setFormData({ name: "", email: "", phone: "", message: "" });
+    //     }, 3000);
+    // };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => {
-            setSubmitted(false);
-            setFormData({ name: "", email: "", phone: "", message: "" });
-        }, 3000);
+
+        try {
+            const form = new FormData();
+
+            form.append("name", formData.name);
+            form.append("email", formData.email);
+            form.append("phone", formData.phone);
+            form.append("message", formData.message);
+
+            const response = await fetch("/contact.php", {
+                method: "POST",
+                body: form,
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setSubmitted(true);
+
+                setTimeout(() => {
+                    setSubmitted(false);
+
+                    setFormData({
+                        name: "",
+                        email: "",
+                        phone: "",
+                        message: "",
+                    });
+                }, 3000);
+            } else {
+                alert("Error al enviar el mensaje");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error al enviar el mensaje");
+        }
     };
 
     return (
@@ -181,7 +222,7 @@ export default function ContactSection() {
                                     <h4 className="font-heading font-bold text-white text-sm uppercase tracking-wider mb-1">
                                         Correo
                                     </h4>
-                                    <p className="font-body text-white/70 text-lg">info@perforacionesrg.com</p>
+                                    <p className="font-body text-white/70 text-lg">contacto@rgperforaciones.com</p>
                                     <p className="font-body text-white/50 text-sm mt-1">
                                         Respuesta en menos de 24 horas
                                     </p>
