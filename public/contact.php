@@ -2,6 +2,54 @@
 
 header('Content-Type: application/json');
 
+// =====================================
+// CARGAR .ENV
+// =====================================
+
+function loadEnv($path)
+{
+    if (!file_exists($path)) {
+        return;
+    }
+
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    foreach ($lines as $line) {
+
+        if (strpos(trim($line), '#') === 0) {
+            continue;
+        }
+
+        if (!str_contains($line, '=')) {
+            continue;
+        }
+
+        list($name, $value) = explode('=', $line, 2);
+
+        $_ENV[trim($name)] = trim($value);
+    }
+}
+
+loadEnv(__DIR__ . '/.env');
+
+// =====================================
+// VALIDAR MÉTODO
+// =====================================
+
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+
+    echo json_encode([
+        "success" => false,
+        "message" => "Método no permitido"
+    ]);
+
+    exit;
+}
+
+// =====================================
+// PHPMailer
+// =====================================
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -9,67 +57,82 @@ require __DIR__ . '/PHPMailer/src/Exception.php';
 require __DIR__ . '/PHPMailer/src/PHPMailer.php';
 require __DIR__ . '/PHPMailer/src/SMTP.php';
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo json_encode([
-        "success" => false,
-        "message" => "Método no permitido"
-    ]);
-    exit;
-}
+// =====================================
+// DATOS DEL FORMULARIO
+// =====================================
 
-// Datos del formulario
-$name    = trim($_POST["name"] ?? "");
-$email   = trim($_POST["email"] ?? "");
-$phone   = trim($_POST["phone"] ?? "");
+$name = trim($_POST["name"] ?? "");
+$email = trim($_POST["email"] ?? "");
+$phone = trim($_POST["phone"] ?? "");
 $message = trim($_POST["message"] ?? "");
 
-// Validación mínima
-if (empty($name) || empty($email) || empty($message)) {
+if (
+    empty($name) ||
+    empty($email) ||
+    empty($message)
+) {
+
     echo json_encode([
         "success" => false,
-        "message" => "Faltan datos obligatorios"
+        "message" => "Faltan campos obligatorios"
     ]);
+
     exit;
 }
+
+// =====================================
+// VARIABLES SMTP
+// =====================================
+
+$smtpHost = $_ENV['SMTP_HOST'];
+$smtpUser = $_ENV['SMTP_USER'];
+$smtpPass = $_ENV['SMTP_PASS'];
+$smtpPort = $_ENV['SMTP_PORT'];
+
+$mailTo = $_ENV['MAIL_TO'];
+$mailFrom = $_ENV['MAIL_FROM'];
 
 try {
 
-    // ============================
-    // MAIL PARA RG PERFORACIONES
-    // ============================
+    // =====================================
+    // CORREO PARA RG PERFORACIONES
+    // =====================================
 
     $mail = new PHPMailer(true);
 
     $mail->isSMTP();
-    $mail->Host       = 'smtp.hostinger.com';
-    $mail->SMTPAuth   = true;
+    $mail->Host = $smtpHost;
+    $mail->SMTPAuth = true;
 
-    $mail->Username   = 'contacto@rgperforaciones.com';
-    $mail->Password   = 'Falcon2620.';
+    $mail->Username = $smtpUser;
+    $mail->Password = $smtpPass;
 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port       = 465;
+    $mail->Port = $smtpPort;
 
     $mail->CharSet = 'UTF-8';
 
     $mail->setFrom(
-        'contacto@rgperforaciones.com',
+        $mailFrom,
         'RG Perforaciones'
     );
 
     $mail->addAddress(
-        'contacto@rgperforaciones.com',
+        $mailTo,
         'RG Perforaciones'
     );
 
-    $mail->addReplyTo($email, $name);
+    $mail->addReplyTo(
+        $email,
+        $name
+    );
 
     $mail->isHTML(true);
 
     $mail->Subject = 'Nueva consulta desde la web';
 
     $mail->Body = "
-        <h2>Nueva consulta desde rgperforaciones.com</h2>
+        <h2>Nueva consulta desde RG Perforaciones</h2>
 
         <p><strong>Nombre:</strong> {$name}</p>
         <p><strong>Email:</strong> {$email}</p>
@@ -84,30 +147,33 @@ try {
 
     $mail->send();
 
-    // ============================
-    // RESPUESTA AUTOMÁTICA CLIENTE
-    // ============================
+    // =====================================
+    // RESPUESTA AUTOMÁTICA AL CLIENTE
+    // =====================================
 
     $clientMail = new PHPMailer(true);
 
     $clientMail->isSMTP();
-    $clientMail->Host       = 'smtp.hostinger.com';
-    $clientMail->SMTPAuth   = true;
+    $clientMail->Host = $smtpHost;
+    $clientMail->SMTPAuth = true;
 
-    $clientMail->Username   = 'contacto@rgperforaciones.com';
-    $clientMail->Password   = 'Falcon2620.';
+    $clientMail->Username = $smtpUser;
+    $clientMail->Password = $smtpPass;
 
     $clientMail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $clientMail->Port       = 465;
+    $clientMail->Port = $smtpPort;
 
     $clientMail->CharSet = 'UTF-8';
 
     $clientMail->setFrom(
-        'contacto@rgperforaciones.com',
+        $mailFrom,
         'RG Perforaciones'
     );
 
-    $clientMail->addAddress($email, $name);
+    $clientMail->addAddress(
+        $email,
+        $name
+    );
 
     $clientMail->isHTML(true);
 
@@ -117,16 +183,26 @@ try {
         <h2>Hola {$name}</h2>
 
         <p>
-            Gracias por comunicarte con RG Perforaciones.
+            Gracias por comunicarte con
+            <strong>RG Perforaciones</strong>.
         </p>
 
         <p>
-            Hemos recibido tu consulta y nos pondremos en contacto
-            a la brevedad.
+            Hemos recibido tu consulta y nos pondremos en contacto a la brevedad.
         </p>
 
         <p>
-            Si necesitás una respuesta urgente podés escribirnos por WhatsApp:
+            Datos recibidos:
+        </p>
+
+        <ul>
+            <li><strong>Nombre:</strong> {$name}</li>
+            <li><strong>Email:</strong> {$email}</li>
+            <li><strong>Teléfono:</strong> {$phone}</li>
+        </ul>
+
+        <p>
+            Si necesitás una respuesta urgente podés comunicarte por WhatsApp:
         </p>
 
         <p>
@@ -136,8 +212,12 @@ try {
         <br>
 
         <p>
-            Saludos.<br>
-            <strong>RG Perforaciones</strong>
+            Saludos cordiales.
+        </p>
+
+        <p>
+            <strong>RG Perforaciones</strong><br>
+            Perforación y corte profesional de hormigón
         </p>
     ";
 
