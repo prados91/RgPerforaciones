@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
+import { Phone, Mail, MapPin, Send, CheckCircle2, Loader2 } from "lucide-react";
 
 export default function ContactSection() {
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -26,6 +27,8 @@ export default function ContactSection() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true);
 
         try {
             const form = new FormData();
@@ -56,11 +59,13 @@ export default function ContactSection() {
                     });
                 }, 3000);
             } else {
-                alert("Error al enviar el mensaje");
+                alert(result.message || "Error al enviar el mensaje");
             }
         } catch (error) {
             console.error(error);
             alert("Error al enviar el mensaje");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -176,11 +181,24 @@ export default function ContactSection() {
                                 </div>
                                 <Button
                                     type="submit"
-                                    className="w-full bg-white text-oxide hover:bg-concrete font-heading font-bold uppercase tracking-widest h-14 text-sm rounded-none transition-all duration-300"
+                                    disabled={loading}
+                                    className="w-full bg-white text-oxide hover:bg-concrete font-heading font-bold uppercase tracking-widest h-14 text-sm rounded-none transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
-                                    <Send className="w-4 h-4 mr-2" />
-                                    Enviar Solicitud
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                            Enviando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-4 h-4 mr-2" />
+                                            Enviar Solicitud
+                                        </>
+                                    )}
                                 </Button>
+                                {loading && (
+                                    <p className="text-center text-white/70 text-sm mt-3">Enviando consulta...</p>
+                                )}
                             </form>
                         )}
                     </motion.div>

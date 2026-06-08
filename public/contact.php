@@ -130,18 +130,31 @@ try {
 
     $mail->Subject = 'Nueva consulta desde la web';
 
+    $mail->Subject = 'Nueva consulta desde rgperforaciones.com';
+
     $mail->Body = "
-        <h2>Nueva consulta desde RG Perforaciones</h2>
-
-        <p><strong>Nombre:</strong> {$name}</p>
-        <p><strong>Email:</strong> {$email}</p>
-        <p><strong>Teléfono:</strong> {$phone}</p>
-
-        <hr>
-
-        <p><strong>Mensaje:</strong></p>
-
-        <p>" . nl2br(htmlspecialchars($message)) . "</p>
+    <h2>Nueva consulta recibida</h2>
+    
+    <table cellpadding='8' cellspacing='0' border='1'>
+    <tr>
+        <td><strong>Nombre</strong></td>
+        <td>{$name}</td>
+    </tr>
+    <tr>
+        <td><strong>Email</strong></td>
+        <td>{$email}</td>
+    </tr>
+    <tr>
+        <td><strong>Teléfono</strong></td>
+        <td>{$phone}</td>
+    </tr>
+    </table>
+    
+    <br>
+    
+    <h3>Mensaje</h3>
+    
+    <p>" . nl2br(htmlspecialchars($message)) . "</p>
     ";
 
     $mail->send();
