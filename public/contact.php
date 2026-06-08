@@ -16,11 +16,13 @@ function loadEnv($path)
 
     foreach ($lines as $line) {
 
-        if (strpos(trim($line), '#') === 0) {
+        $line = trim($line);
+
+        if ($line === '' || strpos($line, '#') === 0) {
             continue;
         }
 
-        if (!str_contains($line, '=')) {
+        if (strpos($line, '=') === false) {
             continue;
         }
 
@@ -53,17 +55,17 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require __DIR__ . '/PHPMailer/src/Exception.php';
-require __DIR__ . '/PHPMailer/src/PHPMailer.php';
-require __DIR__ . '/PHPMailer/src/SMTP.php';
+require __DIR__ . '/phpmailer/src/Exception.php';
+require __DIR__ . '/phpmailer/src/PHPMailer.php';
+require __DIR__ . '/phpmailer/src/SMTP.php';
 
 // =====================================
 // DATOS DEL FORMULARIO
 // =====================================
 
-$name = trim($_POST["name"] ?? "");
-$email = trim($_POST["email"] ?? "");
-$phone = trim($_POST["phone"] ?? "");
+$name    = trim($_POST["name"] ?? "");
+$email   = trim($_POST["email"] ?? "");
+$phone   = trim($_POST["phone"] ?? "");
 $message = trim($_POST["message"] ?? "");
 
 if (
@@ -71,7 +73,6 @@ if (
     empty($email) ||
     empty($message)
 ) {
-
     echo json_encode([
         "success" => false,
         "message" => "Faltan campos obligatorios"
@@ -84,13 +85,13 @@ if (
 // VARIABLES SMTP
 // =====================================
 
-$smtpHost = $_ENV['SMTP_HOST'];
-$smtpUser = $_ENV['SMTP_USER'];
-$smtpPass = $_ENV['SMTP_PASS'];
-$smtpPort = $_ENV['SMTP_PORT'];
+$smtpHost = $_ENV['SMTP_HOST'] ?? '';
+$smtpUser = $_ENV['SMTP_USER'] ?? '';
+$smtpPass = $_ENV['SMTP_PASS'] ?? '';
+$smtpPort = $_ENV['SMTP_PORT'] ?? '465';
 
-$mailTo = $_ENV['MAIL_TO'];
-$mailFrom = $_ENV['MAIL_FROM'];
+$mailTo   = $_ENV['MAIL_TO'] ?? '';
+$mailFrom = $_ENV['MAIL_FROM'] ?? '';
 
 try {
 
@@ -101,14 +102,12 @@ try {
     $mail = new PHPMailer(true);
 
     $mail->isSMTP();
-    $mail->Host = $smtpHost;
-    $mail->SMTPAuth = true;
-
-    $mail->Username = $smtpUser;
-    $mail->Password = $smtpPass;
-
+    $mail->Host       = $smtpHost;
+    $mail->SMTPAuth   = true;
+    $mail->Username   = $smtpUser;
+    $mail->Password   = $smtpPass;
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $mail->Port = $smtpPort;
+    $mail->Port       = (int)$smtpPort;
 
     $mail->CharSet = 'UTF-8';
 
@@ -154,14 +153,12 @@ try {
     $clientMail = new PHPMailer(true);
 
     $clientMail->isSMTP();
-    $clientMail->Host = $smtpHost;
-    $clientMail->SMTPAuth = true;
-
-    $clientMail->Username = $smtpUser;
-    $clientMail->Password = $smtpPass;
-
+    $clientMail->Host       = $smtpHost;
+    $clientMail->SMTPAuth   = true;
+    $clientMail->Username   = $smtpUser;
+    $clientMail->Password   = $smtpPass;
     $clientMail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-    $clientMail->Port = $smtpPort;
+    $clientMail->Port       = (int)$smtpPort;
 
     $clientMail->CharSet = 'UTF-8';
 
@@ -191,9 +188,7 @@ try {
             Hemos recibido tu consulta y nos pondremos en contacto a la brevedad.
         </p>
 
-        <p>
-            Datos recibidos:
-        </p>
+        <p>Datos recibidos:</p>
 
         <ul>
             <li><strong>Nombre:</strong> {$name}</li>
@@ -211,9 +206,7 @@ try {
 
         <br>
 
-        <p>
-            Saludos cordiales.
-        </p>
+        <p>Saludos cordiales.</p>
 
         <p>
             <strong>RG Perforaciones</strong><br>
@@ -231,6 +224,7 @@ try {
 
     echo json_encode([
         "success" => false,
-        "message" => $e->getMessage()
+        "message" => $e->getMessage(),
+        "errorInfo" => $mail->ErrorInfo ?? null
     ]);
 }
